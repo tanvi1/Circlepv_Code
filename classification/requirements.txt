@@ -1,0 +1,6 @@
+opencv-python
+numpy
+requests
+ultralytics
+scikit-image
+PyQt6

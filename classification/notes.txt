@@ -1,0 +1,47 @@
+Solar Panel Anomaly Detection Pipeline - Technical Documentation
+==============================================================================
+Project Overview:
+This project is a hybrid Computer Vision and Heuristic Physics pipeline designed to detect, classify, and assess the severity of damage in solar panels using RGB and IR imagery.
+
+Module Breakdown (Move these into the 'modules/' directory):
+------------------------------------------------------------------------------
+1. classifier.py
+   - Role: The entry point for image inference.
+   - Functionality: Loads pre-trained YOLO models (RGB and IR). Classifies panel defects, provides confidence scores, and uses a confidence-weighted formula to fuse results if both modalities are present.
+
+2. damage_area_IR.py
+   - Role: Thermal damage quantification.
+   - Functionality: Applies HSV color thresholding on pseudo-color IR images to segment hotspots. Calculates a temperature proxy (delta_T) and outputs the percentage of the panel affected.
+
+3. RGB_Damage_area.py
+   - Role: Classical CV segmentation for RGB defects.
+   - Functionality: Contains hardcoded, specialized OpenCV algorithms (e.g., Frangi filters, Hough lines, column intensity drops) to precisely mask and calculate the area of defects like Glass Break, Snail Trails, and Hard Shading.
+
+4. backsheet.py
+   - Role: Specialized Backsheet Damage Detector (v2).
+   - Functionality: A refined, variance-based detector that cleanly separates backsheet cracks from bubbling/ballooning. Triggered dynamically via a flag in the pipeline over the legacy backsheet method.
+
+5. hko_correction.py
+   - Role: Environmental grounding.
+   - Functionality: Queries the live Hong Kong Observatory (HKO) API to fetch ambient temperature and humidity. Applies mathematical physics models to correct the raw delta_T proxy based on current wind speed and irradiance.
+
+6. iv_curve_simulator.py
+   - Role: Electrical profile mapping.
+   - Functionality: Acts as a lookup table. Matches the classified defect type to a simulated Current-Voltage (IV) curve profile (e.g., Flattened, Truncated) and fetches baseline degradation metrics.
+
+7. environmental_validation.py
+   - Role: Weather and Physics Orchestrator.
+   - Functionality: Bridges the visual data with the physical world. Calls the HKO API and the IV simulator to output a corrected environmental profile and base electrical statistics.
+
+8. electrical_estimator.py
+   - Role: Power Loss Calculator.
+   - Functionality: Applies severity-based degradation factors to estimate Fill Factor (FF) and total Power Loss (delta_P) based on the simulated IV data.
+
+9. severity.py
+   - Role: Final Decision Engine.
+   - Functionality: Aggregates the physical damage area (from RGB/IR), the thermal stress, and power loss. Cascades these through a strict hierarchy to output a final severity label (Mild, Moderate, Severe, Critical) and health score.
+
+Root Directory Files:
+------------------------------------------------------------------------------
+- main.py: The central orchestrator that strings all the modules together sequentially.
+- gui.py: The PyQt6 graphical interface allowing dynamic adjustment of environment variables, flags, and paths via a collapsible side panel.

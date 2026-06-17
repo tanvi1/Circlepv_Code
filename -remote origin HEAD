@@ -1,0 +1,5 @@
+[33mb66fa56[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m v1: Uploading LegacyCode
+[33m7180ef3[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Remove final_IR and final_RGB
+[33m7de82d7[m Move large files to Git LFS
+[33m63c930e[m Configure Git LFS
+[33mb187cbb[m Initial commit
