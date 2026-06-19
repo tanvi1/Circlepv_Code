@@ -45,7 +45,8 @@ CLIENT_MODE    = True          # True = Use Client scripts, False = Use Default 
 
 # IR_PATH    = r"imgs\hotspot(3).png"
 IR_PATH = None
-RGB_PATH   = r"imgs\Image.jpg"          # set path if RGB image available, else None
+# RGB_PATH   = r"imgs\Image.jpg"          # set path if RGB image available, else None
+RGB_PATH   = r"imgs\SnailTrails_Microcracks1.png"          # set path if RGB image available, else None
 # RGB_PATH = None
 
 PANEL_ID   = 1
